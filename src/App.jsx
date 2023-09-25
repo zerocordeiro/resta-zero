@@ -3,33 +3,64 @@ import { useState } from 'react'
 
 import './App.css'
 
+var nomedosbotoes = 1;
 
 
-
-
-function ButtonOrBreak(uniqueElement){
-  if (uniqueElement == 'brbr'){
-    return(<br/>);
-  }
+function ButtonTile(){
   return(
     <button key={uniqueElement.index} className={uniqueElement.index}>{uniqueElement}</button>
   );
 }
 
-function MakeArea(doublearray){
-  let allelements = [];
+function changeButton(posx,posy){ //activated by clicking on the buttons of 'tabuleiro' play area
+  return(
+    console.log('function changeButton (posx, posy) = ' + posx + ' , ' + posy)
+  );
+}
+
+function ButtonOrBreak(uniqueElement,ueindex){ //returns the html elements to 'MakeArea' in order to correctly build the play area, by sending buttons to their respective rows and then a BreakRow when ending the lane.
+  console.log('running ButtonOrBreak');
+  if (uniqueElement == 'brbr'){
+    console.log('BR');
+    return(<br/>);
+  } else{
+    console.log('Not BR. uniqueElement: '+ uniqueElement);
+    return(
+      <button key={ueindex} onClick={()=>changeButton(uniqueElement.posx,uniqueElement.posy)}>{nomedosbotoes}</button> //TD: get data from the element passed down from 'MakeArea' and use it as parameters for a function that will be activated 'onClick' to change the state of 'tabuleiro'. 
+    );
+  }
+  
+}
+
+function MakeArea(doublearray){ //gets 'tabuleiro' from main App
+  console.log('In MakeArea -> doublearray: ' + doublearray + '. length:' + doublearray.length)
+  let allelements = []; //sets new empty array to use in for loop
+  let controlobject = {}; //sets net object for parameter control (defining what matrix cell each button stands for)
+  console.log('allelements: '+ allelements + '.');
   for(let i = 0; i<doublearray.length; i++){
     let singlearray=doublearray[i];
-    singlearray.map(
-      tile=>(allelements.push(tile))
-    );
+    console.log('singlearray: '+singlearray +'. length: ' + singlearray.length);
+    for(let j=0; j<singlearray.length;j++){
+      console.log('In MakeArea. posx:' + i + ', posy:' +j);
+      controlobject.posx = j;
+      controlobject.posy = i;
+      console.log('controlobject{posx:' + controlobject.posx+', posy:' + controlobject.posy+'}');
+      allelements.push(controlobject); // creates an object that pulls the position of each item in the original 'tabueiro' array. This data will be used in the buttons to create an 'onClick' function that will change the state of each tile in 'tabueiro'.
+    }
+    // singlearray.map(
+    //   item=>(allelements.push(item))
+    // );
+    console.log('after mapping: allelements: '+allelements);
     allelements.push('brbr');
+    console.log('allelements pushed "brbr"')
+    console.log('allelements after brbr:'+ allelements+ '. length: ' + allelements.length);
+
   }
   return(
-    allelements.map(
+    allelements.map( //robs: allelements is a linear array
       (element)=>(
         // <button>{element}</button>
-        ButtonOrBreak(element) //
+        ButtonOrBreak(element, element.index) //
       )
     )
   )
@@ -40,34 +71,65 @@ function App() {
   const [tabuleiro, setTabuleiro] = useState([['a0','a1'],['b0','b1']]);
 
   function resizeTabuleiro(wd){
-    let width=wd;
-    let height=width;
-    let newtabuleiro=Array();
-    let newline=Array();
-    for (let line=0;line<height;line++){
-      for (let column=0;column<width;column++){
-        const objecttabuleiro = {
+    console.log('------------------------------------------'
+    +'------------------------------'+
+    '----------------------------------' + 
+    'running resizeTabuleiro')
+    let counterresizetab = 0;
+    let neww=wd;
+    let newh=neww;
+    let newtabuleiro=[];
+    for (let line=0;line<newh;line++){
+      let newline=[];
+      for (let column=0;column<neww;column++){
+        var objecttabuleiro = {};
+        var objecttabuleiro = {
           posx:column,
           posy:line,
           value:'teste',
-        }
-        newline.push(objecttabuleiro);
+        };
+        console.log('objecttabuleiro['+ objecttabuleiro.posy + ']['+objecttabuleiro.posx+']. objecttabuleiro: '+ objecttabuleiro,);
+        newline.push({objecttabuleiro});
+        if (column==0){console.log('column ==0' + objecttabuleiro);}
       }
+      counterresizetab++;
       newtabuleiro.push(newline);
+      console.log('newtabuleiro after push(newline): ' +newtabuleiro);
     }
-    alert(newtabuleiro.entries);
+    console.log(' newtabuleiro.length = ' + newtabuleiro.length);
     // setTabuleiro(['a','a','a','a','a'],['a','a','a','a','a'],['a','a','a','a','a']);
     // setTabuleiro((tabuleiro)=> (tabuleiro.push(newtabuleiro)));
-    setTabuleiro([]);
-    setTabuleiro([['a0','a1'],['b0','b1'],['c0','c1']])
+    // setTabuleiro([]);
+    // setTabuleiro([['a0','a1'],['b0','b1'],['c0','c1']]);
+    // alert('tabuleiro pos troca: ' + tabuleiro);
+    //   let sizetab = 4;
+    //   let differenttabuleiro = [];
+    //   let newlinetabuleiro = [];
+    //   for(let i =0; i< sizetab; i++){
+    //     for(let j=0;j<sizetab;j++){
+    //       newlinetabuleiro.push('');
+    //     }
+    //     differenttabuleiro.push(newlinetabuleiro);
+    //     // alert(newline);
+    //   }
+    //   alert('differenttabuleiro: ' + differenttabuleiro)
+    //   alert('tabuleiro: '+tabuleiro+ ' <br/> agora vai trocar');
+      
+    //   setTabuleiro(differenttabuleiro);
+    //   alert('novo tabuleiro: '+ tabuleiro);
+
+      setTabuleiro(newtabuleiro);
+      nomedosbotoes++;
+      console.log('newtabuleiro: ' + newtabuleiro + '----------------------------------- --------------------------------------------------- --------------------------------------------------- ---------------------------------------------------- ----------------------------------------------------------------------------------------------------------- -----------------------tabuleiro after setTabuleiro (l.111): '+ tabuleiro);
+
   }
 
-  function CircleButton(){
+  function CircleButton(){ // used during testing of this code.
     function handleClick(msg='default'){
         // setTabuleiro([['a0','a1','a2'],['b0','b1','b2'],['c0','c1','c2']]);
         // setTabuleiro([['a0','a1'],['b0','b1'],['c0','c1']]);
-        resizeTabuleiro(4);
-        alert(msg);
+        resizeTabuleiro(5);
+        console.log(msg);
     }
     return(
       <button className='circlebutton' onClick={()=>handleClick('clicked')}>
@@ -87,10 +149,16 @@ function App() {
   
   return (
   <div itemID='divapp'>
-    <h1 className='ola'>olá, mundo</h1>
+    <h1 key="gamearea" className='ola'>olá, mundo</h1>
     {MakeArea(tabuleiro)}
+    {/* MakeArea builds the gameplay area from the original  "matrix" tabuleiro*/}
     <br/>
-    <CircleButton />
+    <CircleButton key="circbut"/>
+    {/* CIrcleButton is just a normal button put here to test some things, like sending some console messages.
+    It's currently beign used to try to edit the 'tabuleiro' array.
+    Also used to check if the page is at least partically being build */}
+    <button key="testbut" onClick={()=>(alert(tabuleiro))}>Ver tabuleiro</button>
+    {/* used just to see what's stored in the 'tabuleiro' array */}
       
   </div>
   );
