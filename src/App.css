@@ -11,6 +11,13 @@ button{
   aspect-ratio: 1;
   border-radius: 50%;
 }
+.bluebutton{
+  background-color: blue;
+}
+.redbutton{
+  background-color: red;
+}
+
 .circlebutton{
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: bold;
