@@ -6,14 +6,25 @@ body{
   background-color: blueviolet;
   color: rgb(194, 160, 160);
 }
+.gameArea{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 
 button{
   aspect-ratio: 1;
   border-radius: 40%;
-  width:28%;
-  margin:2%;
 }
-
+#input-size{
+  height:4rem;
+  width:4rem;
+  font-size:x-large;
+  text-align: left;
+}
+.setgame{
+  width:50px;
+}
 .bluebutton{
   background-color:cornflowerblue;
 }

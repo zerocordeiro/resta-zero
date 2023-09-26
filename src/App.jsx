@@ -9,6 +9,7 @@ import './App.css'
 function App() {
   const [contagem, setContagem] = useState(0);
   const [tabuleiro, setTabuleiro] = useState([]);
+  const [gamesize, setGameSize] = useState();
 
   function CheckButton(){
     return(
@@ -45,11 +46,11 @@ function App() {
     console.log('function changeButton (posy, posx) = ' + posy + ' , ' + posx);
     let tabuleiroalt=tabuleiro;
     tabuleiroalt[posy][posx].clicked = !tabuleiroalt[posy][posx].clicked;
-    setTabuleiro[''];
-    console.log('zerou tabuleiro');
+    // setTabuleiro[''];
+    // console.log('zerou tabuleiro');
     setContagem((n)=>n+1);
     setTabuleiro[tabuleiroalt];
-    console.log('tabuleiro['+posy+']['+posx+'].clicked: ' + tabuleiro[posy][posx]['clicked'])
+    // console.log('tabuleiro['+posy+']['+posx+'].clicked: ' + tabuleiro[posy][posx]['clicked'])
     // return(     
     //   MakeArea()
     //   );
@@ -63,8 +64,9 @@ function App() {
     let posy=uniqueElement.posy;
     let butcolor=uniqueElement.clicked?'redbutton':'bluebutton';
     let keystring=String(posx)+String(posy);
+    let width_for_flex=window.innerWidth/(tabuleiro.length*1.1);
     return(
-      <button key={keystring} className={butcolor} onClick={()=>changeButton(posy,posx)}></button>// 
+      <button style={{border:'4px solid black',minWidth:width_for_flex,}} key={keystring} className={butcolor} onClick={()=>changeButton(posy,posx)}></button>// 
     ); 
   }
   
@@ -95,11 +97,16 @@ function MakeArea(){ //gets 'tabuleiro' from main App
     }
     allelements.map((item,index)=>(console.log(index)));
     return(
-      allelements.map( //obs: allelements is a linear array
+      <div className='gameArea'>{
+        allelements.map( //obs: allelements is a linear array
         (element)=>(
           ButtonOrBreak(element) //
         )
       )
+      }
+        
+      </div>
+      
     );
 
 }
@@ -124,23 +131,41 @@ function MakeArea(){ //gets 'tabuleiro' from main App
       }
       newtabuleiro.push(newline);
     }
-      setTabuleiro(['']);
-      console.log('tabuleiro zerado na função resize')
       setTabuleiro(newtabuleiro);
-      console.log('newtabuleiro: ' + newtabuleiro + '----------------------------------- --------------------------------------------------- --------------------------------------------------- ---------------------------------------------------- ----------------------------------------------------------------------------------------------------------- -----------------------tabuleiro after setTabuleiro (l.111): '+ tabuleiro);
     }
   }
-
+  function setNewGameSize(form){
+    form.preventDefault();
+    //prevents reloading the whole page from getting data from the form
+    if(!gamesize){
+      return(document.getElementById('input-size').focus());
+    }else{
+      resizeTabuleiro(gamesize);
+      document.getElementById('input-size').focus();
+    }
+  }
   function CircleButton(){ // used during testing of this code.
     function handleClick(msg='default'){
         resizeTabuleiro(3);
         console.log(msg);
     }
     return(
+      <>
+      <form onSubmit={setNewGameSize}>
+        <input 
+        id='input-size'
+        type='number'
+        placeholder='Set board size'
+        value={gamesize}
+        onChange={(e)=>{setGameSize(e.target.value)}}
+        />
+        <button className='setgame' type='submit'>Set game</button>
+      </form>
       <button className='circlebutton' onClick={()=>handleClick('clicked')}>
       {/* need to pass the function instead of calling it directly or else it triggers as page loads*/}
         Play game
       </button>
+      </>
     );
   }
   
