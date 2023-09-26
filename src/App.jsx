@@ -1,27 +1,58 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import './App.css'
 
-var nomedosbotoes = 1;
+
 
 
 function App() {
+  const [contagem, setContagem] = useState(0);
+  const [tabuleiro, setTabuleiro] = useState([]);
 
-  const [tabuleiro, setTabuleiro] = useState([['a0','a1'],['b0','b1']]);
+  function CheckButton(){
+    return(
+      <button id="ver_tabuleiro" class="ver-tabuleiro" key="testbut" onClick={()=>(alert(
+        '0:' +
+        tabuleiro[0][0].clicked+ ' , ' + 
+        tabuleiro[0][1].clicked+ ' , ' + 
+        tabuleiro[0][2].clicked+ ' , ' + 
+        // tabuleiro[0][3].clicked+ ' , ' + 
+        // tabuleiro[0][4].clicked+ ' , ' + 
+        '\r\n' +
+        '2: ' +
+        tabuleiro[2][0]['clicked']+ ' , ' + 
+        tabuleiro[2][1]['clicked']+ ' , ' + 
+        tabuleiro[2][2]['clicked']+ ' , ' + 
+        // tabuleiro[2][3]['clicked']+ ' , ' + 
+        // tabuleiro[2][4]['clicked']+ ' , ' +
+        '\r\n' 
+        // + '4: ' +
+        // tabuleiro[4][0]['clicked']+ ' , ' + 
+        // tabuleiro[4][1]['clicked']+ ' , ' + 
+        // tabuleiro[4][2]['clicked']+ ' , ' + 
+        // tabuleiro[4][3]['clicked']+ ' , ' + 
+        // tabuleiro[4][4]['clicked']+ ' , ' 
+        ))}>Ver <br/> valor nas <br/> linhas <br/> 0 e -1.</button>
+      /* used to check value changes in the last row of the game board. Just to make sure that it's not getting 'undefined' instead of T or F*/
+    );
+  }
 
-function ButtonOrBreak(uniqueElement){ //returns the html elements to 'MakeArea' in order to correctly build the play area, by sending buttons to their respective rows and then a BreakRow when ending the lane.
+  function ButtonOrBreak(uniqueElement){ //returns the html elements to 'MakeArea' in order to correctly build the play area, by sending buttons to their respective rows and then a BreakRow when ending the lane.
   console.log('running ButtonOrBreak');
 
   function changeButton(posy,posx){ //activated by clicking on the buttons of 'tabuleiro' play area
     console.log('function changeButton (posy, posx) = ' + posy + ' , ' + posx);
     let tabuleiroalt=tabuleiro;
     tabuleiroalt[posy][posx].clicked = !tabuleiroalt[posy][posx].clicked;
+    setTabuleiro[''];
+    console.log('zerou tabuleiro');
+    setContagem((n)=>n+1);
     setTabuleiro[tabuleiroalt];
-    console.log('tabuleiro['+posy+']['+posx+'].clicked: ' + tabuleiro[posy][posx]['clicked'])   
-    return(     
-      MakeArea(tabuleiro)
-      );
+    console.log('tabuleiro['+posy+']['+posx+'].clicked: ' + tabuleiro[posy][posx]['clicked'])
+    // return(     
+    //   MakeArea()
+    //   );
   }
   
   if (uniqueElement == 'brbr'){
@@ -33,7 +64,7 @@ function ButtonOrBreak(uniqueElement){ //returns the html elements to 'MakeArea'
     let butcolor=uniqueElement.clicked?'redbutton':'bluebutton';
     let keystring=String(posx)+String(posy);
     return(
-      <button key={keystring} className={butcolor} onClick={()=>changeButton(posy,posx)}>{nomedosbotoes}</button>// 
+      <button key={keystring} className={butcolor} onClick={()=>changeButton(posy,posx)}></button>// 
     ); 
   }
   
@@ -42,32 +73,35 @@ function ButtonOrBreak(uniqueElement){ //returns the html elements to 'MakeArea'
 
 function MakeArea(){ //gets 'tabuleiro' from main App
   //'doublearray' is a misleading name, because it's actually a multidimensional array. It was called double at the beginning because at first this code was tested with a [[a0,a1],[b0,b1]] array.
-  let doublearray=tabuleiro;
-  console.log('Running MakeArea')
-  let allelements = []; //sets new empty array to use in for loop
-  let controlobject = {}; //sets net object for parameter control (defining what matrix cell each button stands for)
-  // console.log('allelements: '+ allelements + '.');
-  for(let i = 0; i<doublearray.length; i++){
-    let singlearray=doublearray[i];
-    // console.log('singlearray: '+singlearray +'. length: ' + singlearray.length);
-    for(let j=0; j<singlearray.length;j++){
-      // console.log('In MakeArea. posx:' + i + ', posy:' +j);
-      controlobject.posx = j;
-      controlobject.posy = i;
-      controlobject.clicked = doublearray[i][j].clicked;
 
-      allelements.push({posx:controlobject.posx,posy:controlobject.posy,clicked:controlobject.clicked}); 
-      // creates an object that pulls the position of each item in the original 'tabuleiro' array. This data will be used in the buttons to create an 'onClick' function that will change the state of each tile in 'tabueiro'.
+    let doublearray=tabuleiro;
+    console.log('Running MakeArea')
+    let allelements = []; //sets new empty array to use in for loop
+    let controlobject = {}; //sets net object for parameter control (defining what matrix cell each button stands for)
+    // console.log('allelements: '+ allelements + '.');
+    for(let i = 0; i<doublearray.length; i++){
+      let singlearray=doublearray[i];
+      // console.log('singlearray: '+singlearray +'. length: ' + singlearray.length);
+      for(let j=0; j<singlearray.length;j++){
+        // console.log('In MakeArea. posx:' + i + ', posy:' +j);
+        controlobject.posx = j;
+        controlobject.posy = i;
+        controlobject.clicked = doublearray[i][j].clicked;
+
+        allelements.push({posx:controlobject.posx,posy:controlobject.posy,clicked:controlobject.clicked}); 
+        // creates an object that pulls the position of each item in the original 'tabuleiro' array. This data will be used in the buttons to create an 'onClick' function that will change the state of each tile in 'tabueiro'.
+      }
+      allelements.push('brbr');
     }
-    allelements.push('brbr');
-  }
-  return(
-    allelements.map( //obs: allelements is a linear array
-      (element)=>(
-        ButtonOrBreak(element) //
+    allelements.map((item,index)=>(console.log(index)));
+    return(
+      allelements.map( //obs: allelements is a linear array
+        (element)=>(
+          ButtonOrBreak(element) //
+        )
       )
-    )
-  );
+    );
+
 }
 
 
@@ -77,6 +111,9 @@ function MakeArea(){ //gets 'tabuleiro' from main App
     +'------------------------------'+
     '----------------------------------' + 
     'running resizeTabuleiro')
+    if(wd==tabuleiro.length){
+      console.log('sem alteração');
+    }else{
     let neww=wd;
     let newh=neww;
     let newtabuleiro=[];
@@ -87,9 +124,11 @@ function MakeArea(){ //gets 'tabuleiro' from main App
       }
       newtabuleiro.push(newline);
     }
+      setTabuleiro(['']);
+      console.log('tabuleiro zerado na função resize')
       setTabuleiro(newtabuleiro);
-      nomedosbotoes++;
       console.log('newtabuleiro: ' + newtabuleiro + '----------------------------------- --------------------------------------------------- --------------------------------------------------- ---------------------------------------------------- ----------------------------------------------------------------------------------------------------------- -----------------------tabuleiro after setTabuleiro (l.111): '+ tabuleiro);
+    }
   }
 
   function CircleButton(){ // used during testing of this code.
@@ -106,11 +145,17 @@ function MakeArea(){ //gets 'tabuleiro' from main App
   }
   
   
-
+  useEffect(
+    ()=>{
+      console.log('Effect');
+      MakeArea();
+    },[tabuleiro]
+  )
 
   return (
   <div itemID='divapp'>
     <h1 key="gamearea" className='ola'>Hello</h1>
+    <p>Número de jogadas: {contagem}</p>
     <MakeArea />
     {/* MakeArea builds the gameplay area from the original  "matrix" tabuleiro*/}
     <br/>
@@ -118,31 +163,10 @@ function MakeArea(){ //gets 'tabuleiro' from main App
     {/* CircleButton is just a normal button put here to test some things, like sending some console messages.
     It's currently beign used to try to edit the 'tabuleiro' array.
     Also used to check if the page is at least partically being build */}
-    <button id="ver_tabuleiro" key="testbut" onClick={()=>(alert(
-      '0:' +
-      tabuleiro[0][0].clicked+ ' , ' + 
-      tabuleiro[0][1].clicked+ ' , ' + 
-      tabuleiro[0][2].clicked+ ' , ' + 
-      // tabuleiro[0][3].clicked+ ' , ' + 
-      // tabuleiro[0][4].clicked+ ' , ' + 
-      '\r\n' +
-      '2: ' +
-      tabuleiro[2][0]['clicked']+ ' , ' + 
-      tabuleiro[2][1]['clicked']+ ' , ' + 
-      tabuleiro[2][2]['clicked']+ ' , ' + 
-      // tabuleiro[2][3]['clicked']+ ' , ' + 
-      // tabuleiro[2][4]['clicked']+ ' , ' +
-      '\r\n' 
-      // + '4: ' +
-      // tabuleiro[4][0]['clicked']+ ' , ' + 
-      // tabuleiro[4][1]['clicked']+ ' , ' + 
-      // tabuleiro[4][2]['clicked']+ ' , ' + 
-      // tabuleiro[4][3]['clicked']+ ' , ' + 
-      // tabuleiro[4][4]['clicked']+ ' , ' 
-      ))}>Ver <br/> valor nas <br/> linhas <br/> 0 e -1.</button>
-    {/* used to check value changes in the last row of the game board. Just to make sure that it's not getting 'undefined' instead of T or F*/}
+    {/* <CheckButton /> */}
       <br/>
-      {JSON.stringify(tabuleiro)}
+      {/* {JSON.stringify(tabuleiro)} */}
+      {/* THis JSON is just to see the changes in the 'tabuleiro' array values*/}
   </div>
   );
 }

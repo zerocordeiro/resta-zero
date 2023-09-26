@@ -9,15 +9,20 @@ body{
 
 button{
   aspect-ratio: 1;
-  border-radius: 50%;
-}
-.bluebutton{
-  background-color: blue;
-}
-.redbutton{
-  background-color: red;
+  border-radius: 40%;
+  width:28%;
+  margin:2%;
 }
 
+.bluebutton{
+  background-color:cornflowerblue;
+}
+.redbutton{
+  background-color:crimson;
+}
+.ver-tabuleiro{
+  width: 90px;
+}
 .circlebutton{
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: bold;
