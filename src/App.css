@@ -19,7 +19,7 @@ body{
 }
 .gameArea{
   margin:10px auto 10px auto;
-  background-color: pink;  
+  /* background-color: pink;   */
   align-content: space-around;
   text-align: center;
   line-height: 0%;
