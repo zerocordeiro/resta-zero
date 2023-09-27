@@ -1,29 +1,36 @@
 body{
   margin:0;
-  
+  background-color:azure;
 }
 .ola{
-  background-color: blueviolet;
-  color: rgb(194, 160, 160);
-}
-.gameArea{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  margin:0;
+  text-align: center;
+  background-color: rgb(10, 99, 84);
+  color: rgb(226, 228, 219);
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  margin-bottom: 5px;
 }
 
-button{
+.cctext, .cccount{
+  display: inline;
+  margin-bottom: 100px;
+  font-size: 16pt;
+  font-family: 'Courier New', Courier, monospace;
+}
+.gameArea{
+  margin:10px auto 10px auto;
+  background-color: pink;  
+  align-content: space-around;
+  text-align: center;
+  line-height: 0%;
+  margin-bottom: -1em;
+}
+
+
+.bluebutton, .redbutton{
   aspect-ratio: 1;
-  border-radius: 40%;
-}
-#input-size{
-  height:4rem;
-  width:4rem;
-  font-size:x-large;
-  text-align: left;
-}
-.setgame{
-  width:50px;
+  border-radius: 35%;
+  border:3px solid #260026;
 }
 .bluebutton{
   background-color:cornflowerblue;
@@ -31,15 +38,36 @@ button{
 .redbutton{
   background-color:crimson;
 }
-.ver-tabuleiro{
-  width: 90px;
-}
+
 .circlebutton{
+  display:block;
+  margin: 0px auto 0px auto;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 16pt;
   font-weight: bold;
-  width:100px;
-  height:100px;
-  border-radius: 50%;
-  padding: 20px;
+  width:90%;
+  height:50px;
+  border-radius: 10px;
 }
 
+.formcontainer{
+  display:block;
+  margin:auto;
+  text-align: center;
+  margin-top: 2em;
+}
+#input-size{
+  display:inline;
+  height:3rem;
+  width:4rem;
+  font-size:large;
+  text-align: left;
+}
+.setgame{
+  display:inline;
+  width:80px;
+  height:50px;
+  margin:0px;
+  border-radius: 1.2em;
+  margin-left: 10px;
+}
