@@ -3,6 +3,10 @@ import { useState, useEffect } from 'react'
 
 import './App.css'
 
+import { checkVictory } from './checkVictory';
+import { changeColor } from './changeColor';
+import { MyFooter } from './MyFooter';
+
 /*
 Helloooo, and welcome to my little game!
 This was done in about 5 days using Vite.js and the infinite combined knowledge and wisdom of some very nice people that post their problems, questions and solutions on the internet for us all to learn from their pain.
@@ -32,26 +36,6 @@ function App() {
   // const [victory,setVictory] = useState(false);
   // let victory = false;
   
-  function checkVictory(tabuleiroalt){
-    //goes through each row checking if all items are clicked. If it find one that isn't, will stop the loop as soon as it end the check by changing the value of the counters to the end condition
-    // Was originally part of the code for changeButton, but as a separate function it's easier to use on different parts of the code, even though that means it has to recheck for the winning condition each time. But setting a separate variable to keep track of this wasn't really working, because it would reset each time the app reloaded and wouldn't let to show the "endgame" screen properly.
-    let victorychecking=false;
-    for(let posyn=0;posyn<(tabuleiroalt.length);posyn++){
-      for(let posxn=0;posxn<(tabuleiroalt.length);posxn++){
-        if(tabuleiroalt[posyn][posxn].clicked==true){
-          // setVictory(true);
-          victorychecking=true;
-        }else{
-          // setVictory(false);
-          victorychecking=false;
-          posxn=tabuleiroalt.length;
-          posyn=tabuleiroalt.length;
-
-        }
-      }
-    }
-    return(victorychecking);
-  }
   
   function ButtonOrBreak(uniqueElement,gameisfinished=false){ //returns the html elements to 'MakeArea' in order to correctly build the play area, by sending buttons to their respective rows and then a BreakRow when ending the lane.
   // console.log('running ButtonOrBreak');
@@ -75,67 +59,38 @@ function App() {
 
 
     function changeButton(posy,posx){ //this is the function that will be called upon each button clicked in the 'tabuleiro' play area
-
-      // console.log('function changeButton (posy, posx) = ' + posy + ' , ' + posx);
-      let tabuleiroalt=tabuleiro;
-      tabuleiroalt[posy][posx].clicked = !tabuleiroalt[posy][posx].clicked;    
-
-      // Code below will make spaces adjacent to the one clicked on to also change
-      // To make checks simpler and the code easier to visualize let's set four variables for the 4 possiblwe adjacent squares.
-      let posybefore = posy-1;
-      let posyafter = posy+1;
-      let posxbefore = posx-1;
-      let posxafter = posx+1;
-      if(posybefore>=0){
-        tabuleiroalt[posybefore][posx].clicked = !tabuleiroalt[posybefore][posx].clicked;
-      }
-      if(posyafter<tabuleiro[0].length){
-        tabuleiroalt[posyafter][posx].clicked = !tabuleiroalt[posyafter][posx].clicked;
-      }
-      if(posxbefore>=0){
-        tabuleiroalt[posy][posxbefore].clicked = !tabuleiroalt[posy][posxbefore].clicked;
-      }
-      if(posxafter<tabuleiro[0].length){
-        tabuleiroalt[posy][posxafter].clicked = !tabuleiroalt[posy][posxafter].clicked;
-      }
-      // End of change to adjacent squares
-      setContagem((n)=>n+1); //this is what makes the screen update with each click
-      setTabuleiro[tabuleiroalt];
-      
-      let victory=checkVictory(tabuleiroalt);
-
-      if(victory==true){
-        
-        console.log('Congratulations! You used '+ (contagem+1) + ' clicks to make the board clear :)');
-        alert('Congratulations! You used '+ (contagem+1) + ' moves to complete this puzzle!');
-        
-      }
+      let tabuleiroalt=tabuleiro; 
+      tabuleiroalt=changeColor(tabuleiroalt,posy,posx);
+      setContagem((n)=>n+1); 
+      checkVictory(tabuleiroalt,contagem);
     } //end of changeButton
   
-  if (uniqueElement == 'brbr'){
-    // console.log('BR');
-    return(<br/>);
-  } else{
-    let posx=uniqueElement.posx;
-    let posy=uniqueElement.posy;
-    let butcolor=uniqueElement.clicked?'bluebutton':'redbutton';
-    let keystring=String(posx)+String(posy);
-    let width_for_flex=0.9*((window.innerWidth)/(tabuleiro.length));
-    if(window.innerHeight<window.innerWidth){width_for_flex=window.innerHeight/(tabuleiro.length);}
-      width_for_flex*=0.9;
-    return(
-      <button style={{width:width_for_flex, maxWidth:width_for_flex,}} key={keystring} className={butcolor} onClick={()=>changeButton(posy,posx)}></button>// 
-    ); 
-  }
-  
+//ButtonOrBreak continues
+
+    if (uniqueElement == 'brbr'){
+      // console.log('BR');
+      return(<br/>);
+    } else{
+      let posx=uniqueElement.posx;
+      let posy=uniqueElement.posy;
+      let butcolor=uniqueElement.clicked?'bluebutton':'redbutton';
+      let keystring=String(posx)+String(posy);
+      let width_for_flex=0.9*((window.innerWidth)/(tabuleiro.length));
+      if(window.innerHeight<window.innerWidth){width_for_flex=window.innerHeight/(tabuleiro.length);}
+        width_for_flex*=0.9;
+      return(
+        <button style={{width:width_for_flex, maxWidth:width_for_flex,}} key={keystring} className={butcolor} onClick={()=>changeButton(posy,posx)}></button>// 
+      ); 
+    }
+    
 }
 
 
   function MakeArea(){ //gets 'tabuleiro' from main App
-    //'doublearray' is a misleading name, because it's actually a multidimensional array. It was called double at the beginning because at first this code was tested with a [[a0,a1],[b0,b1]] array.
-    if(tabuleiro==[]){
+
+    if(tabuleiro.length==0){
       return(
-        <h1>Inicie o jogo</h1>
+        <h1 class='startgame'>Start a quick game or choose your board size.</h1>
       );
     }
     if(checkVictory(tabuleiro)){
@@ -153,6 +108,7 @@ function App() {
 
       // console.log(victory);
       let doublearray=tabuleiro;
+      //'doublearray' is a misleading name, because it's actually a multidimensional array. It was called double at the beginning because at first this code was tested with a [[a0,a1],[b0,b1]] array.
 
       if(doublearray.length==0){ // If the page does not have a board to show the size of the game area will shrink to pull the buttons to the top, making it easier to see and access them 
         size_tabuleiro=window.innerHeight*0.05;
@@ -269,29 +225,29 @@ function App() {
       resizeTabuleiro(gamesize);
     }
     
-    document.getElementById('input-size').focus();
+    // document.getElementById('input-size').focus();
   }
 
-  function CircleButton(){ 
+  function SetGame(){ 
     // name heralded from the beginning of this code
-    function handleClick(msg='default'){
+    function handleClickQuickSetup(){
         let randomnumber = Math.floor(Math.random()*(10 - 3 + 1)) + 3;
         // Math.floor(Math.random()*(max - min + 1)) + min;
         resizeTabuleiro(randomnumber);
         // console.log(msg);
     }
-    return(
+    return( //from SetGame
       <>
-        <button className='circlebutton' onClick={()=>handleClick('clicked')}>
-      {/* need to pass the function instead of calling it directly or else it triggers as page loads*/}
+        <button className='quicksetup' onClick={()=>handleClickQuickSetup()}>
         Quick setup
       </button>
+      
       <div className='formcontainer'>
       <form onSubmit={newGameSize}>
         <input 
         id='input-size'
         type='number'
-        placeholder='Size'
+        placeholder='2 - 15'
         value={gamesize}
         onChange={(e)=>{setGameSize(e.target.value)}}
         />
@@ -302,26 +258,15 @@ function App() {
     );
   }
   
-  function MyFooter(){
-    return(
-      <footer className='footer'>
-        <p className='madeby'>Made by José Cordeiro (@zerocordeiro) &copy; 2023
-        </p>
-        <a href='https://www.linkedin.com/in/zerocordeiro/' target='newtab'>Linkedin</a>
-        </footer>
-    );
-  }
-  return (
-    
+  return ( //from App.
   <div itemID='divapp'>
     <h1 key="titlegame" className='ola'>Turn all buttons blue</h1>
     <p className='cctext'>Click count: </p> <p className="cccount">{contagem}</p>
     <MakeArea key='makearea' id='makearea' />
     {/* MakeArea builds the gameplay area from the original  "matrix" tabuleiro*/}
     <br/>
-    {/* <CircleButton key="circbut"/> */}
-    {CircleButton() } 
-    {/* by calling CircleButton like this we prevent the input field bein out of focus every time because of the page loading */}
+    {SetGame() } 
+    {/* by calling SetGame like this we prevent the input field bein out of focus every time one number is input because of the page loading */}
       <br/>
       <MyFooter />
   </div>
