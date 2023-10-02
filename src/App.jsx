@@ -9,21 +9,23 @@ import { MyFooter } from './MyFooter';
 import { makeLongArray } from './MakeLongArray';
 import { copyMultiArray } from './CopyMultiArray';
 
-function ButtonBuilder({changeColorButtonBuilder}){
-  let colorbutton='blue';
+function ButtonBuilder({changeColorButtonBuilder,buttonclicked}){
+  let colorbutton='red';
+  buttonclicked?colorbutton='blue':colorbutton='red';
   return(
-    <button  style={{backgroundColor:{colorbutton}}}
+    <button  style={{backgroundColor:colorbutton}}
     onClick={()=>changeColorButtonBuilder(0,0)}
     >432345</button>
   );
 }
   
 
-function GameAreaBuilder({changeColorAreaBuilder}){
+function GameAreaBuilder({changeColorAreaBuilder,buttonclickedAreaBuilder}){
   return(
     <>
       <ButtonBuilder
             changeColorButtonBuilder={changeColorAreaBuilder} 
+            buttonclicked={buttonclickedAreaBuilder}
       />
     </>
     
@@ -55,6 +57,7 @@ function clickedOnPosition(y=0,x=0){
 
     <GameAreaBuilder 
       changeColorAreaBuilder={clickedOnPosition}
+      buttonclickedAreaBuilder={tabuleiro[0][0].clicked}
     />
     <br/>
       <br/>
