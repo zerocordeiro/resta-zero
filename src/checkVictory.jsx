@@ -14,8 +14,8 @@ function checkVictory(tabuleiroalt,contagem){
     }
     
     if(victorychecking==true && typeof(contagem)=='number'){
-        console.log('Congratulations! You used '+ (contagem+1) + ' clicks to make the board clear :)');
-        alert('Congratulations! You used '+ (contagem+1) + ' moves to complete this puzzle!');
+        console.log('Congratulations! You used '+ (contagem) + ' clicks to make the board clear :)');
+        alert('Congratulations! You used '+ (contagem) + ' moves to complete this puzzle!');
       }
 
     return(victorychecking);
