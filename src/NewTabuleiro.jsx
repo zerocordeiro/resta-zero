@@ -18,7 +18,7 @@ function newTabuleiro(size){
 let tabuleiroClicked=newtabuleiroNT;
     // console.log('tabuleiroClicked: ' + JSON.stringify(tabuleiroClicked));
     let checkifmarked=[''];
-    let maxstep=tabuleiroClicked.length;
+    let maxstep=tabuleiroClicked.length*1.5;
     for(let step=0;step<maxstep;step++){
         let posyc = Math.floor(Math.random()*(tabuleiroClicked.length - 1 + 1)) + 1 -1;
         let posxc = Math.floor(Math.random()*(tabuleiroClicked.length - 1 + 1)) + 1 -1;

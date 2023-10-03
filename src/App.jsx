@@ -6,7 +6,6 @@ import './App.css'
 import { checkVictory } from './checkVictory';
 import { changeColor } from './changeColor';
 import { MyFooter } from './MyFooter';
-import { makeLongArray } from './MakeLongArray';
 import { copyMultiArray } from './CopyMultiArray';
 import { ButtonBuilder } from './ButtonBuilder';
 import { GameAreaBuilder } from './GameAreaBuilder';
@@ -62,6 +61,9 @@ function resetGameSize(newgamesize){
     />
       <br/>
       <MyFooter />
+      <div style={{position:'absolute',top:0,right:0,textAlign:'right', color:'rgba(120,120,120,0.3)',fontSize:14}}>
+        V.0.2310031835
+      </div>
   </div>
   );
 }
