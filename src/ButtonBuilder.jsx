@@ -1,9 +1,9 @@
 function ButtonBuilder({changeColorButtonBuilder,tabuleiroButtonBuilder,y,x}){
     let colorClass='';
     tabuleiroButtonBuilder[y][x].clicked?colorClass='bluebutton':colorClass='redbutton';
-    let width_for_flex=0.9*((window.innerWidth)/(tabuleiroButtonBuilder.length));
+    let width_for_flex=((window.innerWidth)/(tabuleiroButtonBuilder.length));
     if(window.innerHeight<window.innerWidth){width_for_flex=window.innerHeight/(tabuleiroButtonBuilder.length);}
-      width_for_flex*=0.9;
+      width_for_flex*=0.8;
     if(x==0&&y!=0){
       return(
         <>

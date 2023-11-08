@@ -62,7 +62,7 @@ function resetGameSize(newgamesize){
       <br/>
       <MyFooter />
       <div style={{position:'absolute',top:0,right:0,textAlign:'right', color:'rgba(120,120,120,0.3)',fontSize:14}}>
-        V.0.2310031835
+        V.0.23111081909
       </div>
   </div>
   );

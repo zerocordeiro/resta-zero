@@ -5,7 +5,7 @@ import { ButtonVictory } from "./ButtonVictory";
 function GameAreaBuilder({changeColorAreaBuilder,tabuleiroAreaBuilder,contagemAreaBuilder}){
     let size_tabuleiro=(window.innerWidth);
     if(window.innerHeight<window.innerWidth){size_tabuleiro=window.innerHeight;}
-        size_tabuleiro*=0.9;
+        size_tabuleiro*=0.805;
 
     if(tabuleiroAreaBuilder.length==0){
       return(
